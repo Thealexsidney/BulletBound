@@ -9,13 +9,10 @@ public class FollowMouse : MonoBehaviour
     private Camera mainCamera;
 
     private bool isPaused = false;
-
-    public int Health;
-    public int maxHealth;
-    public float dodgeChance;
+    
     public TextMeshProUGUI healthText;
 
-    public int Coins;
+    
     public TextMeshProUGUI coinsText;
 
     public GameObject pauseMenu;
@@ -25,23 +22,25 @@ public class FollowMouse : MonoBehaviour
     public TextMeshProUGUI statsText;
     
 
-    [SerializeField]
-    private float maxSpeed = 10f;
+    
+    
     
 
     // Start is called before the first frame update
     void Start()
     {
         mainCamera = Camera.main;
-        healthText.text = "Health: " + Health + "/" + maxHealth;
-        coinsText.text = "Coins: " + Coins;
+        GameManager.Instance.playerHealth = GameManager.Instance.playerMaxHealth;
+        healthText.text = "Health: " + GameManager.Instance.playerHealth + "/" + GameManager.Instance.playerMaxHealth;
+        coinsText.text = "Coins: " + GameManager.Instance.Coins;
         timeAlive = 0;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        FollowMousePosistion(maxSpeed);
+        FollowMousePosistion(GameManager.Instance.maxSpeed);
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             TogglePause();
@@ -49,7 +48,7 @@ public class FollowMouse : MonoBehaviour
         timeAlive =  timeAlive + 1*Time.deltaTime;
         timeText.text = "Time: " + timeAlive.ToString("F2");
 
-        statsText.text = "Max Health: " + maxHealth + "\nMax Speed: " + maxSpeed + "\nDodge: " + dodgeChance;
+        statsText.text = "Max Health: " + GameManager.Instance.playerMaxHealth + "\nMax Speed: " + GameManager.Instance.maxSpeed + "\nDodge: " + GameManager.Instance.dodgeChance;
     }
 
     public void TogglePause()
@@ -91,16 +90,16 @@ public class FollowMouse : MonoBehaviour
     {
         if (other.CompareTag("Bullet"))
         {
-            if (Random.value > dodgeChance)
+            if (Random.value > GameManager.Instance.dodgeChance)
             {
-                Health--;
+                GameManager.Instance.playerHealth--;
                                 
-                healthText.text = "Health: " + Health + "/" + maxHealth;
+                healthText.text = "Health: " + GameManager.Instance.playerHealth + "/" + GameManager.Instance.playerMaxHealth;
 
-                if (Health <= 0)
+                if (GameManager.Instance.playerHealth <= 0)
                 {
                     SceneManager.LoadScene("GameOver");
-                    Health = maxHealth;
+                    GameManager.Instance.playerHealth = GameManager.Instance.playerMaxHealth;
                 }
             }
             
@@ -109,16 +108,16 @@ public class FollowMouse : MonoBehaviour
         }
         if (other.CompareTag("Laser"))
         {
-            if (Random.value > dodgeChance)
+            if (Random.value > GameManager.Instance.dodgeChance)
             {
-                Health--;
+                GameManager.Instance.playerHealth--;
 
-                healthText.text = "Health: " + Health + "/" + maxHealth;
+                healthText.text = "Health: " + GameManager.Instance.playerHealth + "/" + GameManager.Instance.playerMaxHealth;
 
-                if (Health <= 0)
+                if (GameManager.Instance.playerHealth <= 0)
                 {
                     SceneManager.LoadScene("GameOver");
-                    Health = maxHealth;
+                    GameManager.Instance.playerHealth = GameManager.Instance.playerMaxHealth;
                 }
             }
 
@@ -127,17 +126,17 @@ public class FollowMouse : MonoBehaviour
         }
         if (other.CompareTag("Coin"))
         {
-            Coins++;
+            GameManager.Instance.Coins++;
             Destroy(other.gameObject);
-            coinsText.text = "Coins: " + Coins;
+            coinsText.text = "Coins: " + GameManager.Instance.Coins;
         }
         if (other.CompareTag("Heal"))
         {
-            if (Health < maxHealth)
+            if (GameManager.Instance.playerHealth < GameManager.Instance.playerMaxHealth)
             {
-                Health++;
+                GameManager.Instance.playerHealth++;
                 Destroy(other.gameObject);
-                healthText.text = "Health: " + Health + "/" + maxHealth;
+                healthText.text = "Health: " + GameManager.Instance.playerHealth + "/" + GameManager.Instance.playerMaxHealth;
             }
             
         }
@@ -156,28 +155,28 @@ public class FollowMouse : MonoBehaviour
 
     public void HealthUp()
     {
-        if (maxHealth < 20)
+        if (GameManager.Instance.playerMaxHealth < 20)
         {
-            if (Coins >= 1)
+            if (GameManager.Instance.Coins >= 1)
             {
-                Coins -= 1;
-                maxHealth ++;
-                Health++;
-                healthText.text = "Health: " + Health + "/" + maxHealth;
-                coinsText.text = "Coins: " + Coins;
+                GameManager.Instance.Coins -= 1;
+                GameManager.Instance.playerMaxHealth ++;
+                GameManager.Instance.playerHealth++;
+                healthText.text = "Health: " + GameManager.Instance.playerHealth + "/" + GameManager.Instance.playerMaxHealth;
+                coinsText.text = "Coins: " + GameManager.Instance.playerHealth;
             }
         }
     }
 
     public void SpeedUp()
     {
-        if(maxSpeed < 10)
+        if(GameManager.Instance.maxSpeed < 10)
         {
-            if(Coins >= 1)
+            if(GameManager.Instance.Coins >= 1)
             {
-                Coins -= 1;
-                maxSpeed += 0.5f;
-                coinsText.text = "Coins: " + Coins;
+                GameManager.Instance.Coins -= 1;
+                GameManager.Instance.maxSpeed += 0.5f;
+                coinsText.text = "Coins: " + GameManager.Instance.Coins;
             }
         }
                 
@@ -185,13 +184,13 @@ public class FollowMouse : MonoBehaviour
 
     public void DogdeUp()
     {
-        if (dodgeChance < 0.5)
+        if (GameManager.Instance.dodgeChance < 0.5)
         {
-            if (Coins >= 5)
+            if (GameManager.Instance.Coins >= 5)
             {
-                Coins -= 5;
-                dodgeChance += 0.05f;
-                coinsText.text = "Coins: " + Coins;
+                GameManager.Instance.Coins -= 5;
+                GameManager.Instance.dodgeChance += 0.05f;
+                coinsText.text = "Coins: " + GameManager.Instance.Coins;
             }
         }
 
