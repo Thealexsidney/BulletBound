@@ -98,7 +98,7 @@ public class FollowMouse : MonoBehaviour
 
                 if (GameManager.Instance.playerHealth <= 0)
                 {
-                    SceneManager.LoadScene("GameOver");
+                    SceneManager.LoadScene("SkillTree");
                     GameManager.Instance.playerHealth = GameManager.Instance.playerMaxHealth;
                 }
             }
@@ -153,47 +153,6 @@ public class FollowMouse : MonoBehaviour
         Application.Quit();
     }
 
-    public void HealthUp()
-    {
-        if (GameManager.Instance.playerMaxHealth < 20)
-        {
-            if (GameManager.Instance.Coins >= 1)
-            {
-                GameManager.Instance.Coins -= 1;
-                GameManager.Instance.playerMaxHealth ++;
-                GameManager.Instance.playerHealth++;
-                healthText.text = "Health: " + GameManager.Instance.playerHealth + "/" + GameManager.Instance.playerMaxHealth;
-                coinsText.text = "Coins: " + GameManager.Instance.playerHealth;
-            }
-        }
-    }
-
-    public void SpeedUp()
-    {
-        if(GameManager.Instance.maxSpeed < 10)
-        {
-            if(GameManager.Instance.Coins >= 1)
-            {
-                GameManager.Instance.Coins -= 1;
-                GameManager.Instance.maxSpeed += 0.5f;
-                coinsText.text = "Coins: " + GameManager.Instance.Coins;
-            }
-        }
-                
-    }
-
-    public void DogdeUp()
-    {
-        if (GameManager.Instance.dodgeChance < 0.5)
-        {
-            if (GameManager.Instance.Coins >= 5)
-            {
-                GameManager.Instance.Coins -= 5;
-                GameManager.Instance.dodgeChance += 0.05f;
-                coinsText.text = "Coins: " + GameManager.Instance.Coins;
-            }
-        }
-
-    }
+    
 
 }

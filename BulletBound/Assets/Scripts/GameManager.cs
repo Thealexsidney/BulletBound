@@ -11,6 +11,19 @@ public class GameManager : MonoBehaviour
     public float dodgeChance;
     public int playerHealth;
     public float maxSpeed = 5f;
+
+    //Skill Tree Bools
+    public bool healthOneBought;
+    public bool healthTwoBought;
+
+    public bool speedOneBought;
+    public bool speedTwoBought;
+
+    public bool dodgeOneBought;
+    public bool dodgeTwoBought;
+
+
+
     private void Awake()
     {
         if (Instance == null)
